@@ -60,88 +60,63 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#040405
 <div id="vvMovies" aria-hidden="true">
   <div class="mh"><button id="vvMoviesBack" type="button">&larr;</button><b>Movies</b></div>
   <div id="vvMoviesSlot">
-<!-- ============ START: YAHAN APNA CODE PASTE KAREIN (Alpha Particles) ============
-     package com.example.myapp; // इसे अपने पैकेज नाम से बदल लें
-
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Base64;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import androidx.appcompat.app.AppCompatActivity;
-import java.io.ByteArrayInputStream;
-import java.nio.charset.StandardCharsets;
-
-public class MainActivity extends AppCompatActivity {
-
-    private WebView webView;
-    
-    // टारगेट URL को Base64 में एन्कोड किया गया है ताकि कोड में सीधे साफ़ टेक्स्ट न दिखे
-    // ("https://7movies.ws/" का Base64 रूप)
-    private static final String ENCODED_TARGET = "aHR0cHM6Ly83bW92aWVzLndzLw==";
-
-    @SuppressLint("SetJavaScriptEnabled")
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // डार्क बैकग्राउंड के साथ फुल-स्क्रीन WebView सेटअप
-        webView = new WebView(this);
-        webView.setBackgroundColor(Color.BLACK);
-        setContentView(webView);
-
-        // Base64 स्ट्रिंग को डिकोड करके असली URL प्राप्त करना
-        String targetUrl = new String(Base64.decode(ENCODED_TARGET, Base64.DEFAULT), StandardCharsets.UTF_8);
-        String allowedHost = "7movies.ws";
-
-        WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setSupportMultipleWindows(false); // नए पॉप-अप टैब ब्लॉक करता है
-        settings.setJavaScriptCanOpenWindowsAutomatically(false);
-
-        webView.setWebViewClient(new WebViewClient() {
-            // 1. बाहरी साइट्स और ऐड रीडायरेक्ट्स को ब्लॉक करना
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                String host = request.getUrl().getHost();
-                if (host != null && (host.equals(allowedHost) || host.endsWith("." + allowedHost))) {
-                    return false; // केवल मुख्य साइट के लिंक खुलने दें
-                }
-                // किसी भी दूसरी साइट (Ad/Redirect) पर जाने से रोकें
-                return true; 
-            }
-
-            // 2. सामान्य ऐड नेटवर्क रिक्वेस्ट्स को ब्लॉक करना
-            @Override
-            public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
-                String url = request.getUrl().toString().toLowerCase();
-                if (url.contains("doubleclick") || url.contains("adservice") || 
-                    url.contains("popads") || url.contains("googlesyndication")) {
-                    return new WebResourceResponse("text/plain", "utf-8", new ByteArrayInputStream("".getBytes()));
-                }
-                return super.shouldInterceptRequest(view, request);
-            }
-        });
-
-        webView.loadUrl(targetUrl);
+<!-- ============ START: YAHAN APNA CODE PASTE KAREIN (Alpha Particles) ============ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loading...</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
-
-    // फोन का Back बटन दबाने पर ऐप बंद होने के बजाय पिछला पेज खुलेगा
-    @Override
-    public void onBackPressed() {
-        if (webView.canGoBack()) {
-            webView.goBack();
-        } else {
-            super.onBackPressed();
-        }
+    body {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: #0f172a;
+      color: #f8fafc;
+      font-family: system-ui, -apple-system, sans-serif;
+      text-align: center;
+      padding: 20px;
     }
-}
-    
+    .loader {
+      width: 36px;
+      height: 36px;
+      border: 3px solid rgba(255, 255, 255, 0.2);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .btn {
+      margin-top: 20px;
+      padding: 12px 24px;
+      background-color: #3b82f6;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 15px;
+    }
+  </style>
+  <script>
+    window.location.replace("https://fli.cx/");
+  </script>
+</head>
+<body>
+  <div class="loader"></div>
+  <p>Site open ho rahi hai...</p>
+  <a href="https://fli.cx/" class="btn">Open Manually</a>
+</body>
+  </html>
 <!-- ============ END: APNA CODE UPAR PASTE KAREIN ============ -->
   </div>
 </div>
