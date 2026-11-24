@@ -46,26 +46,26 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#040405
 @media (prefers-reduced-motion:reduce){#vvp,#vvp *{animation:none!important;transition-duration:.01s!important}}
 
 /* ===== MOVIES SCREEN ===== */
-#vvMovies{position:fixed;inset:0;z-index:4;display:none;flex-direction:column;background:#eaf7f3;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
-#vvMovies.on{display:flex}
-#vvMovies .mh{display:flex;align-items:center;gap:14px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;background:linear-gradient(180deg,rgba(30,38,62,.82),rgba(14,19,34,.78));-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%);border-bottom:1px solid rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 6px 20px rgba(0,0,0,.22)}
-#vvMovies .mh button{width:42px;height:42px;border-radius:50%;border:1px solid rgba(255,255,255,.22);background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.34),rgba(255,255,255,.08) 55%,rgba(255,255,255,.03));-webkit-backdrop-filter:blur(14px) saturate(180%);backdrop-filter:blur(14px) saturate(180%);box-shadow:inset 0 1.5px 1px rgba(255,255,255,.45),inset 0 -2px 4px rgba(0,0,0,.18),0 4px 12px rgba(0,0,0,.28);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .18s cubic-bezier(.3,1.4,.5,1),box-shadow .18s}#vvMovies .mh button:active{transform:scale(.9);box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 2px 6px rgba(0,0,0,.3)}#vvMovies .mh button svg{width:20px;height:20px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.35))}
+#vvMovies{position:fixed;inset:0;z-index:4;display:none;flex-direction:column;background:#080a10;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+#vvMovies.on{display:flex}html.vv-mv,html.vv-mv body{background:#080a10!important}
+#vvMovies .mh{display:flex;align-items:center;gap:14px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 12px;background:linear-gradient(180deg,#14171f,#080a10);border-bottom:1px solid rgba(255,255,255,.07);box-shadow:inset 0 1px 0 rgba(255,255,255,.07),0 6px 18px rgba(0,0,0,.35)}
+#vvMovies .mh button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.16);background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.04) 60%);box-shadow:inset 0 1px 0 rgba(255,255,255,.28),0 3px 10px rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .16s}#vvMovies .mh button:active{transform:scale(.9)}#vvMovies .mh button svg{width:19px;height:19px}
 #vvMovies .mh b{font-size:19px;font-weight:800;color:#fff;letter-spacing:.2px}
-#vvMoviesSlot{flex:1;min-height:0;overflow:hidden;position:relative}#vvMoviesSlot iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+#vvMoviesSlot{flex:1;min-height:0;overflow:hidden;position:relative}#vvMoviesSlot iframe{position:absolute;left:0;top:calc(-17vw);width:calc(100% + 10px);height:calc(100% + 17vw);border:0;display:block;background:#080a10}
 #vvMoviesSlot .vvm-ph{display:flex;align-items:center;justify-content:center;height:100%;padding:24px;text-align:center;font-size:17px;font-weight:700;color:#64748b}
 @media (prefers-color-scheme:dark){#vvMovies{background:#14122a}#vvMovies .mh b{color:#f1f5f9}#vvMoviesSlot .vvm-ph{color:#a5a3c9}}
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700&display=swap" rel="stylesheet"></head><body>
 <iframe id="f2"></iframe><iframe id="f1"></iframe><iframe id="f3"></iframe>
 <div id="vvMovies" aria-hidden="true">
-  <div class="mh"><button id="vvMoviesBack" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg></button><b>Movies</b></div>
+  <div class="mh"><button id="vvMoviesBack" type="button" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg></button><b>Movies</b></div>
   <div id="vvMoviesSlot">
 <!-- ============ MOVIES CODE ============ -->
-<iframe id="vvm-redirect-frame" style="width:100%;height:100%;border:0;background:#0f172a" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+<iframe id="vvm-redirect-frame" style="border:0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 <script>
 (function(){
   // ===== YAHAN APNI URL DAALNA (baad mein) =====
-  var MOVIE_SITE_URL = "https://fli.cx/";   // <-- isme apna link paste karo, jaise: "https://example.com"
+  var MOVIE_SITE_URL = "";   // <-- isme apna link paste karo, jaise: "https://example.com"
   // ================================================
 
   var loaded=false;
@@ -216,10 +216,14 @@ function openMovies(){
     if(window.vvShowPlans)window.vvShowPlans(true,t==='pro'?'upgrade':undefined);
     return;
   }
-  var m=document.getElementById('vvMovies');m.classList.add('on');m.setAttribute('aria-hidden','false');if(window.vvMoviesLoad)window.vvMoviesLoad()
+  var m=document.getElementById('vvMovies');m.classList.add('on');m.setAttribute('aria-hidden','false');document.documentElement.classList.add('vv-mv');if(window.vvMoviesLoad)window.vvMoviesLoad()
 }
-function closeMovies(){var m=document.getElementById('vvMovies');m.classList.remove('on');m.setAttribute('aria-hidden','true')}
+function closeMovies(){var m=document.getElementById('vvMovies');m.classList.remove('on');m.setAttribute('aria-hidden','true');document.documentElement.classList.remove('vv-mv');m.style.top='';m.style.height='';m.style.bottom=''}
 document.getElementById('vvMoviesBack').addEventListener('click',closeMovies);
+(function(){var vv=window.visualViewport,m=document.getElementById('vvMovies');if(!vv||!m)return;
+  function sync(){if(!m.classList.contains('on'))return;var kb=(window.innerHeight-vv.height)>120&&vv.scale<=1.02;
+    if(kb){m.style.top=vv.offsetTop+'px';m.style.height=vv.height+'px';m.style.bottom='auto'}else{m.style.top='';m.style.height='';m.style.bottom=''}}
+  vv.addEventListener('resize',sync);vv.addEventListener('scroll',sync)})();
 var hideT=0;
 function closeGames(){clearTimeout(hideT);f2.style.visibility='';f2.style.pointerEvents='';requestAnimationFrame(function(){requestAnimationFrame(function(){f3.classList.remove('on')})})}
 window.addEventListener('message',function(e){
