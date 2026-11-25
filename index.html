@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-visual">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#080a10">
 <title>VIDYAVERSE</title>
 <style>
 html,body{margin:0;height:100%;background:#040405;overflow:hidden}
@@ -51,11 +52,14 @@ iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#040405
 #vvMoviesSlot{position:absolute;inset:0;overflow:hidden}#vvMoviesSlot iframe{position:absolute;left:0;top:0;width:100%;height:100%;border:0;display:block;background:#080a10}
 #vvMovies,#vvMoviesSlot{overscroll-behavior:none;overflow:hidden;background:#080a10}
 #vvMovies{touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;overscroll-behavior:none}
-html.vv-mv,html.vv-mv body{overscroll-behavior:none;overflow:hidden;position:fixed;width:100%;height:100%}
+html.vv-mv,html.vv-mv body{overscroll-behavior:none;overflow:hidden}
+#vvMovies{--vvm-crop:24px;--vvm-back:30px}
+#vvMoviesSlot #vvm-redirect-frame{top:calc(var(--vvm-crop) * -1);height:calc(100% + var(--vvm-crop))}
+#vvmTop{position:absolute;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#080a10;z-index:4;pointer-events:none}
 #vvmSplash{position:absolute;inset:0;z-index:3;background:#080a10;opacity:1;transition:opacity .45s ease;pointer-events:auto}#vvmSplash.off{opacity:0;pointer-events:none}
 #vvm-redirect-frame{opacity:0;transition:opacity .35s ease}#vvm-redirect-frame.rdy{opacity:1}
 html.vv-mv,html.vv-mv body{overscroll-behavior:none;background:#080a10!important}
-#vvmTg{position:absolute;left:12px;top:calc(12px + env(safe-area-inset-top,0px));z-index:5;width:42px;height:42px;border-radius:50%;display:flex;background:#000;border:1.5px solid rgba(255,255,255,.28);box-shadow:0 4px 14px rgba(0,0,0,.45);-webkit-tap-highlight-color:transparent;padding:0;align-items:center;justify-content:center;color:#fff;cursor:pointer;outline:none}
+#vvmTg{position:absolute;left:12px;top:calc(var(--vvm-back) + env(safe-area-inset-top,0px));z-index:5;width:42px;height:42px;border-radius:50%;display:flex;background:#000;border:1.5px solid rgba(255,255,255,.28);box-shadow:0 4px 14px rgba(0,0,0,.45);-webkit-tap-highlight-color:transparent;padding:0;align-items:center;justify-content:center;color:#fff;cursor:pointer;outline:none}
 #vvmTg:active{transform:scale(.92)}
 #vvMoviesSlot .vvm-ph{display:flex;align-items:center;justify-content:center;height:100%;padding:24px;text-align:center;font-size:17px;font-weight:700;color:#64748b}
 @media (prefers-color-scheme:dark){#vvMovies{background:#14122a}#vvMoviesSlot .vvm-ph{color:#a5a3c9}}
@@ -64,16 +68,18 @@ html.vv-mv,html.vv-mv body{overscroll-behavior:none;background:#080a10!important
 <iframe id="f2"></iframe><iframe id="f1"></iframe><iframe id="f3"></iframe>
 <div id="vvMovies" aria-hidden="true">
   <div id="vvMoviesSlot">
-<div id="vvmSplash"></div>
+<div id="vvmSplash"></div><div id="vvmTop"></div>
 <!-- ============ MOVIES CODE ============ -->
 <iframe id="vvm-redirect-frame" sandbox="allow-scripts allow-same-origin allow-forms allow-presentation allow-orientation-lock" style="border:0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
 <script>
 (function(){
   // ===== YAHAN APNI URL DAALNA (baad mein) =====
-  var MOVIE_SITE_URL = "https://fli.cx/";   // <-- isme apna link paste karo, jaise: "https://example.com"
+  var MOVIE_SITE_URL = "";   // <-- isme apna link paste karo, jaise: "https://example.com"
   // ================================================
 
   var loaded=false;
+  try{if(MOVIE_SITE_URL){var o=new URL(MOVIE_SITE_URL,location.href).origin,h=document.head;
+    ['preconnect','dns-prefetch'].forEach(function(r){var l=document.createElement('link');l.rel=r;l.href=o;if(r==='preconnect')l.crossOrigin='';h.appendChild(l)})}}catch(e){}
   window.vvMoviesLoad=function(){
     if(loaded||!MOVIE_SITE_URL)return;loaded=true;
     var fr=document.getElementById('vvm-redirect-frame'),sp=document.getElementById('vvmSplash'),done=false;
@@ -82,7 +88,7 @@ html.vv-mv,html.vv-mv body{overscroll-behavior:none;background:#080a10!important
       try{var d=fr.contentDocument;if(d&&d.head){var st=d.createElement('style');
         st.textContent='html,body{overscroll-behavior:none!important;-webkit-tap-highlight-color:transparent!important;background:#080a10}*{-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}body{-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}::-webkit-scrollbar{display:none}html{scrollbar-width:none}';
         d.head.appendChild(st);d.addEventListener('contextmenu',function(e){e.preventDefault()})}}catch(e){}
-      setTimeout(reveal,450)}); /* thoda ruk ke dikhao: upar wali loading line / half-render dikhe hi nahi */
+      setTimeout(reveal,250)}); /* thoda ruk ke dikhao: upar wali loading line / half-render dikhe hi nahi */
     setTimeout(reveal,9000);
     fr.src = MOVIE_SITE_URL;
   };
@@ -213,7 +219,7 @@ function showApp(){
   setTimeout(function(){f1.style.opacity='';f1.classList.add('leave')},140);
   setTimeout(function(){f1.src='about:blank';f1.style.display='none'},1100);
   setTimeout(preloadGames,1800);
-  setTimeout(function(){var t=vvTier();if((t==='plus'||t==='max')&&window.vvMoviesLoad)window.vvMoviesLoad()},2600);
+  setTimeout(function(){var t=vvTier();if((t==='plus'||t==='max')&&window.vvMoviesLoad)window.vvMoviesLoad()},600);
   setTimeout(function(){if(window.vvShowPlans)window.vvShowPlans(false)},1100);
 }
 function tryShow(){if(want&&ready2)showApp()}
@@ -236,27 +242,8 @@ function openMovies(){
 document.addEventListener('click',function(e){if(e.target.closest&&e.target.closest('#vvmTg'))closeMovies()});
 function closeMovies(){var m=document.getElementById('vvMovies');m.classList.remove('on');m.setAttribute('aria-hidden','true');document.documentElement.classList.remove('vv-mv');if(window.vvMoviesKb)window.vvMoviesKb(false);m.style.top='';m.style.height='';m.style.bottom=''}
 
-/* ===== MOVIES: keyboard pe koi resize/reflow nahi (white patti + "loading" jaisa feel fix) =====
-   - Movies khulte hi keyboard 'overlay' mode me jaata hai: page resize/pan hota hi nahi, keyboard bas upar se aata hai.
-   - Fallback (jin browsers me API nahi): container ki height lock rehti hai aur visual viewport ke saath pin hota hai. */
-(function(){
-  var vv=window.visualViewport,m=document.getElementById('vvMovies'),vk=navigator.virtualKeyboard,lockH=0;
-  function full(){return Math.max(window.innerHeight,(vv&&vv.height)||0,lockH)}
-  window.vvMoviesKb=function(on){
-    try{if(vk)vk.overlaysContent=!!on}catch(e){}
-    if(on){lockH=Math.max(window.innerHeight,(vv&&vv.height)||0);m.style.height=lockH+'px';m.style.bottom='auto';sync()}
-    else{lockH=0;m.style.height='';m.style.bottom='';m.style.top='';m.style.transform=''}
-  };
-  function sync(){
-    if(!m||!m.classList.contains('on'))return;
-    var kb=vv&&(window.innerHeight-vv.height)>120&&vv.scale<=1.02;
-    if(kb&&!(vk&&vk.overlaysContent)){ /* fallback: size same rahe, sirf visible area ke saath chipka rahe */
-      m.style.transform='translate3d('+(vv.offsetLeft||0)+'px,'+(vv.offsetTop||0)+'px,0)';
-    }else{ m.style.transform='' }
-  }
-  if(vv){vv.addEventListener('resize',sync);vv.addEventListener('scroll',sync)}
-  window.addEventListener('orientationchange',function(){if(m.classList.contains('on'))setTimeout(function(){window.vvMoviesKb(true)},350)});
-})();
+/* Movies keyboard: browser khud (native) resize karta hai, JS se koi height/offset change nahi -> lag/pink patti nahi */
+window.vvMoviesKb=function(){var m=document.getElementById('vvMovies');if(m){m.style.height='';m.style.top='';m.style.bottom='';m.style.transform=''}};
 document.addEventListener('contextmenu',function(e){if(document.documentElement.classList.contains('vv-mv'))e.preventDefault()});
 document.addEventListener('gesturestart',function(e){e.preventDefault()});
 var hideT=0;
