@@ -407,7 +407,7 @@ if(LOCKED){ /* password screen comes first; the intro starts only after unlockin
   font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased;
   transition:width .6s cubic-bezier(.32,1.3,.4,1),height .6s cubic-bezier(.32,1.3,.4,1),border-radius .6s cubic-bezier(.32,1.3,.4,1),opacity .25s ease,transform .5s cubic-bezier(.32,1.3,.4,1);will-change:width,height,transform}
 #vvIsl.in{opacity:1;transform:none}
-#vvIsl.open{width:min(92vw,340px);height:58px;border-radius:29px}
+#vvIsl.open{width:var(--vvw,220px);height:var(--vvh,58px);border-radius:var(--vvr,29px)}
 #vvIsl .t,#vvIsl .c{max-width:94%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;filter:blur(7px);transform:scale(.9);transition:opacity .28s ease,filter .28s ease,transform .28s ease}
 #vvIsl.open .t,#vvIsl.open .c{opacity:1;filter:none;transform:none;transition-duration:.4s;transition-delay:.2s}
 #vvIsl .t{font-weight:800;font-size:13px;letter-spacing:.07em}
@@ -418,9 +418,21 @@ if(LOCKED){ /* password screen comes first; the intro starts only after unlockin
   el.innerHTML='<div class="t"></div><div class="c"></div>';document.body.appendChild(el);
   var tt=el.firstChild,cc=el.lastChild,tm=[];
   function after(ms,f){tm.push(setTimeout(f,ms))}
+  /* text ki asli chaudai naapo (canvas se) taaki pill sirf utni hi badi khule jitne mein
+     text aa jaaye - har baar max-size tak jump na kare, jaisa asli iPhone Dynamic Island karta hai */
+  var _mc=document.createElement('canvas').getContext('2d');
+  function textW(str,font,trackingEm,sizePx){
+    _mc.font=font;return _mc.measureText(str).width+str.length*trackingEm*sizePx;
+  }
   function show(title,code){
     tm.forEach(clearTimeout);tm=[];
     tt.textContent=title;cc.textContent=code||'';cc.style.display=code?'':'none';
+    var padX=34,minW=128,maxW=Math.min(window.innerWidth*.92,300);
+    var tW=textW(title,'800 13px "Plus Jakarta Sans",system-ui,sans-serif',.07,13);
+    var cW=code?textW(code,'600 12px ui-monospace,Menlo,Consolas,monospace',.06,12):0;
+    var w=Math.max(minW,Math.min(maxW,Math.max(tW,cW)+padX));
+    var h=code?58:40,r=h/2;
+    el.style.setProperty('--vvw',w+'px');el.style.setProperty('--vvh',h+'px');el.style.setProperty('--vvr',r+'px');
     el.className='';void el.offsetWidth;
     el.classList.add('in');
     after(90,function(){el.classList.add('open')});
