@@ -342,6 +342,7 @@ window.addEventListener('message',function(e){
     if(s.height||s.top||s.bottom||s.transition){s.transition='none';s.top='';s.height='';s.bottom='';}
     curT=0;curH=window.innerHeight;
   }
+  var syncT=0;
   function sync(){
     if(document.documentElement.classList.contains('vv-mv'))return;
     if(vv){
@@ -350,8 +351,19 @@ window.addEventListener('message',function(e){
       if(kb)go(vv.offsetTop,vv.height);else reset();
     }else reset();
   }
-  if(vv){vv.addEventListener('resize',sync);vv.addEventListener('scroll',sync)}
-  window.addEventListener('resize',sync);
+  /* keyboard khulte hi visualViewport 'resize' aur window 'resize' events alag-alag time par aate hain
+     (khaaskar Android par) - isse beech mein ek pal ke liye JS "kb" samajh kar go() chala deta tha
+     aur turant hi window resize aane par reset() wapas snap kar deta tha. Is jhatke mein iframe ka
+     apna dark background (#040405) ek frame ke liye dikh jaata tha - wahi black box glitch.
+     Yahi race sirf keyboard khulte waqt nahi, baad mein type karte waqt bhi bar-bar ho sakta hai -
+     kyunki Gboard jaisa keyboard apna suggestion/toolbar strip ki height type karte hue khud
+     badalta rehta hai, aur har baar ek naya visualViewport resize event fire hota hai.
+     Fix: har resize/scroll event ko ek thodi badi (160ms) window mein debounce karke ek hi
+     faisla lo - isse khulte waqt aur typing ke dauran, dono mein wahi go()-phir-turant-reset()
+     wala race nahi hoga. */
+  function sync_(){clearTimeout(syncT);syncT=setTimeout(sync,160)}
+  if(vv){vv.addEventListener('resize',sync_);vv.addEventListener('scroll',sync_)}
+  window.addEventListener('resize',sync_);
 })();
 /* ---- offline support: connection probe + service worker ---- */
 var NET=navigator.onLine!==false,probing=false;
